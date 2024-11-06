@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/style.css">
+    <title><%= title %></title>
+</head>
+<body>
+    <header>
+        <h1>Credit Card Tracker</h1>
+        <nav>
+            <a href="/mycards">My Cards</a>
+            <a href="/apply">Apply for Card</a>
+            <a href="/recommendations">Recommendations</a>
+            <a href="/reviews">Reviews</a>
+        </nav>
+    </header>
+
+    <main>
+        <%- include('partials/' + page); %>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Credit Card Tracker</p>
+    </footer>
+</body>
+</html>

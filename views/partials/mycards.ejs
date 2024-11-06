@@ -1,0 +1,85 @@
+<h2>My Cards</h2>
+
+<!-- Button to open the add card form -->
+<button id="addCardBtn">Add Card</button>
+
+<!-- Form to add a new card -->
+<div id="addCardForm" style="display: none;">
+    <h3>Add a New Card</h3>
+    <form action="/mycards/add" method="POST">
+        <label for="name">Card Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="number">Card Number:</label>
+        <input type="text" id="number" name="number" required>
+
+        <label for="expiration">Expiration Date:</label>
+        <input type="text" id="expiration" name="expiration" placeholder="MM/YY" required>
+
+        <button type="submit">Add Card</button>
+        <button type="button" id="cancelAddCardBtn">Cancel</button>
+    </form>
+</div>
+
+<!-- Displaying existing cards -->
+<div>
+    <% cards.forEach(card => { %>
+        <div class="card">
+            <h3><%= card.name %></h3>
+            <p>Card Number: <%= card.number %></p>
+            <p>Expiration Date: <%= card.expiration %></p>
+            <button class="editCardBtn" data-id="<%= card.id %>">Edit</button>
+            <form action="/mycards/delete/<%= card.id %>" method="POST" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+    <% }); %>
+</div>
+
+<!-- Form to edit an existing card -->
+<div id="editCardForm" style="display: none;">
+    <h3>Edit Card</h3>
+    <form action="/mycards/edit" method="POST">
+        <input type="hidden" id="editCardId" name="id">
+        <label for="editName">Card Name:</label>
+        <input type="text" id="editName" name="name" required>
+
+        <label for="editNumber">Card Number:</label>
+        <input type="text" id="editNumber" name="number" required>
+
+        <label for="editExpiration">Expiration Date:</label>
+        <input type="text" id="editExpiration" name="expiration" placeholder="MM/YY" required>
+
+        <button type="submit">Update Card</button>
+        <button type="button" id="cancelEditCardBtn">Cancel</button>
+    </form>
+</div>
+
+<script>
+    // JavaScript to toggle the add card form
+    document.getElementById('addCardBtn').onclick = function() {
+        document.getElementById('addCardForm').style.display = 'block';
+    };
+
+    document.getElementById('cancelAddCardBtn').onclick = function() {
+        document.getElementById('addCardForm').style.display = 'none';
+    };
+
+    document.getElementById('cancelEditCardBtn').onclick = function() {
+        document.getElementById('editCardForm').style.display = 'none';
+    };
+
+    // Show edit form and populate it with existing card data
+    const editButtons = document.querySelectorAll('.editCardBtn');
+    editButtons.forEach(button => {
+        button.onclick = function() {
+            const cardId = this.getAttribute('data-id');
+            const card = <%- JSON.stringify(cards) %>.find(c => c.id == cardId);
+            document.getElementById('editCardId').value = card.id;
+            document.getElementById('editName').value = card.name;
+            document.getElementById('editNumber').value = card.number;
+            document.getElementById('editExpiration').value = card.expiration;
+            document.getElementById('editCardForm').style.display = 'block';
+        };
+    });
+</script>
